@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from colorthief import ColorThief
+from PIL import Image
 from io import BytesIO
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ def rgb_to_name(rgb):
 
 @app.route("/")
 def home():
-    return "Gasket AI with Color Detection is live!"
+    return "Gasket AI with Pillow color detection is live!"
 
 @app.route("/analyze-card", methods=["POST"])
 def analyze_card():
@@ -33,13 +33,16 @@ def analyze_card():
         return jsonify({"error": "No card image uploaded"}), 400
 
     try:
-        image_stream = BytesIO(file.read())
-        color_thief = ColorThief(image_stream)
-        dominant_color = color_thief.get_color(quality=1)
-        color_name = rgb_to_name(dominant_color)
+        img = Image.open(BytesIO(file.read()))
+        img = img.convert("RGB")
+        img.thumbnail((200, 200))  # Resize to reduce memory load
+
+        colors = img.getcolors(maxcolors=1000000)
+        dominant = max(colors, key=lambda x: x[0])[1]
+        color_name = rgb_to_name(dominant)
 
         return jsonify({
-            "result": f"Suggested gasket color: {color_name} (RGB: {dominant_color})"
+            "result": f"Suggested gasket color: {color_name} (RGB: {dominant})"
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500

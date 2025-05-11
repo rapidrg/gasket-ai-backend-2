@@ -1,6 +1,6 @@
-# Gasket AI Backend with Color Detection
+# Gasket AI Backend with Optimized Pillow Color Detection
 
-This backend extracts dominant colors from a trading card image to suggest matching gasket colors.
+This backend uses Pillow to extract dominant colors from a trading card image, resized for low memory usage on Render.
 
 ## API
 
