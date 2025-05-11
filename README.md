@@ -1,10 +1,10 @@
-# Gasket AI Backend
+# Gasket AI Backend with Color Detection
 
-A simple Flask API that accepts an uploaded trading card image and returns a mock gasket color match result.
+This backend extracts dominant colors from a trading card image to suggest matching gasket colors.
 
 ## API
 
-- `POST /analyze-card` — Upload an image using the key `cardImage`.
+- `POST /analyze-card` — Upload an image using the key `cardImage`
 
 ## To run locally
 
@@ -15,7 +15,6 @@ python app.py
 
 ## Deployment
 
-You can deploy this app to platforms like Render using:
-
+Use Render:
 - Build command: `pip install -r requirements.txt`
 - Start command: `gunicorn app:app`
